@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier un élève</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <main class="container py-5" style="max-width: 700px;">
+        <a href="{{ url_for('index') }}" class="btn btn-link px-0 mb-3">Retour à la liste</a>
+        <section class="card shadow-sm">
+            <div class="card-body">
+                <h1 class="h3 mb-4">Modifier l'élève</h1>
+                {% if error %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endif %}
+                <form method="post" enctype="multipart/form-data" class="row g-3">
+                    <div class="col-md-4">
+                        <label for="prenom" class="form-label">Prénom</label>
+                        <input type="text" id="prenom" name="prenom" value="{{ eleve.prenom }}"
+                               class="form-control" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="nom" class="form-label">Nom</label>
+                        <input type="text" id="nom" name="nom" value="{{ eleve.nom }}"
+                               class="form-control" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="classe" class="form-label">Classe</label>
+                        <input type="text" id="classe" name="classe" value="{{ eleve.classe }}"
+                               class="form-control" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="date_naissane" class="form-label">Date de naissance</label>
+                        <input type="date" id="date_naissane" name="date_naissane"
+                               value="{{ eleve.date_naissane }}" class="form-control" required>
+                    </div>
+                    <div class="col-md-4">
+                        <span class="form-label d-block">Sexe</span>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" id="sexe-f" name="sexe" value="F"
+                                   class="form-check-input" {% if eleve.sexe == "F" %}checked{% endif %} required>
+                            <label for="sexe-f" class="form-check-label">Fille</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" id="sexe-m" name="sexe" value="M"
+                                   class="form-check-input" {% if eleve.sexe == "M" %}checked{% endif %}>
+                            <label for="sexe-m" class="form-check-label">Garçon</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="profile" class="form-label">Photo de profil</label>
+                        <input type="file" id="profile" name="profile" class="form-control"
+                               accept=".png,.jpg,.jpeg,.gif,.webp">
+                        {% if eleve.profile %}
+                            <img src="{{ url_for('static', filename='uploads/' + eleve.profile) }}"
+                                 alt="Profil actuel" width="60" height="60"
+                                 class="rounded-circle object-fit-cover mt-2">
+                        {% endif %}
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

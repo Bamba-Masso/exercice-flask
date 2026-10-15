@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Mon profil{% endblock %}
+
+{% block content %}
+<main class="container py-5" style="max-width: 700px;">
+    <section class="card shadow-sm">
+        <div class="card-body p-4">
+            <h1 class="h3 mb-4">Mon profil</h1>
+
+            <form method="post" action="{{ url_for('profile') }}">
+                <div class="mb-3">
+                    <label for="nom_complet" class="form-label">Nom complet</label>
+                    <input type="text" id="nom_complet" name="nom_complet"
+                        class="form-control" value="{{ user['nom_complet'] }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Adresse e-mail</label>
+                    <input type="email" id="email" name="email"
+                        class="form-control" value="{{ user['email'] }}" required>
+                </div>
+
+                <hr class="my-4">
+                <p class="text-muted">Laissez ces champs vides pour conserver votre mot de passe actuel.</p>
+
+                <div class="mb-3">
+                    <label for="mot_de_passe" class="form-label">Nouveau mot de passe</label>
+                    <input type="password" id="mot_de_passe" name="mot_de_passe"
+                        class="form-control" minlength="8" autocomplete="new-password">
+                </div>
+
+                <div class="mb-4">
+                    <label for="mot_de_passe_conf" class="form-label">Confirmer le nouveau mot de passe</label>
+                    <input type="password" id="mot_de_passe_conf" name="mot_de_passe_conf"
+                        class="form-control" minlength="8" autocomplete="new-password">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+                <a href="{{ url_for('index') }}" class="btn btn-outline-secondary ms-2">Annuler</a>
+            </form>
+        </div>
+    </section>
+</main>
+{% endblock %}

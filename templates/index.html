@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="container py-5">
+    <h1 class="mb-4">Gestion des élèves</h1>
+
+    <p class="text-muted">Bienvenue, {{ session.get("user") }} !</p>
+    {% if session.get("user") %}
+
+    <section class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h2 class="h4">Créer un élève</h2>
+            <form method="post" action="{{ url_for('ajouter') }}" enctype="multipart/form-data" class="row g-3">
+                <div class="col-md-4">
+                    <label for="prenom" class="form-label">Prénom</label>
+                    <input type="text" id="prenom" name="prenom" class="form-control" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="nom" class="form-label">Nom</label>
+                    <input type="text" id="nom" name="nom" class="form-control" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="classe" class="form-label">Classe</label>
+                    <input type="text" id="classe" name="classe" class="form-control" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="date_naissane" class="form-label">Date de naissance</label>
+                    <input type="date" id="date_naissane" name="date_naissane" class="form-control" required>
+                </div>
+                <div class="col-md-4">
+                    <span class="form-label d-block">Sexe</span>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" id="sexe-f" name="sexe" value="F" class="form-check-input" required>
+                        <label for="sexe-f" class="form-check-label">Fille</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" id="sexe-m" name="sexe" value="M" class="form-check-input">
+                        <label for="sexe-m" class="form-check-label">Garçon</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="profile" class="form-label">Photo de profil</label>
+                    <input type="file" id="profile" name="profile" class="form-control"
+                        accept=".png,.jpg,.jpeg,.gif,.webp">
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Ajouter l'élève</button>
+                </div>
+            </form>
+        </div>
+    </section>
+    {% endif %}
+    <section class="card shadow-sm">
+        <div class="card-body">
+            <h2 class="h4">Liste des élèves</h2>
+            <div class="table-responsive">
+                <table class="table table-striped align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Prénom</th>
+                            <th>Nom</th>
+                            <th>Classe</th>
+                            <th>Date de naissance</th>
+                            <th>Sexe</th>
+                            <th>Profil</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for eleve in eleves %}
+                        <tr>
+                            <td>{{ eleve.id }}</td>
+                            <td>{{ eleve.prenom }}</td>
+                            <td>{{ eleve.nom }}</td>
+                            <td>{{ eleve.classe }}</td>
+                            <td>{{ eleve.date_naissane }}</td>
+                            <td>{{ "Fille" if eleve.sexe == "F" else "Garçon" }}</td>
+                            <td>
+                                {% if eleve.profile %}
+                                <img src="{{ url_for('static', filename='uploads/' + eleve.profile) }}"
+                                    alt="Profil de {{ eleve.prenom }}" width="40" height="40"
+                                    class="rounded-circle object-fit-cover">
+                                {% else %}
+                                <span class="text-muted">Aucune</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-end">
+                                <a href="{{ url_for('modifier', eleve_id=eleve.id) }}"
+                                    class="btn btn-sm btn-outline-secondary">Modifier</a>
+                                <form method="post" action="{{ url_for('supprimer', eleve_id=eleve.id) }}"
+                                    class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger"
+                                        onclick="return confirm('Supprimer cet élève ?');">
+                                        Supprimer
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="8" class="text-center text-muted">
+                                Aucun élève enregistré.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}
